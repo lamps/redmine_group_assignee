@@ -25,7 +25,7 @@ Redmine::Plugin.register :redmine_group_assignee do
   name 'Redmine Groups plugin'
   author 'jj. ofsoul'
   description 'Assignee Redmine Group'
-  version '0.1.0'
+  version '1.0.0'
   url 'https://github.com/lamps/redmine_group_assignee'
   author_url 'https://github.com/lamps/redmine_group_assignee'
   requires_redmine :version_or_higher => '1.2.0'
