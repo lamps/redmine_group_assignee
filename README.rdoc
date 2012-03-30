@@ -1,3 +1,14 @@
 = groups
 
-Description goes here
+Administrator does not have to. Users can add to the group.
+
+h1. Using
+
+Admin Setting
+1. Administration > Groups > Click 'group' field > Assignee tab
+2. assignee-user -> add click
+!adminsetting.PNG!
+
+Group Admin Setting
+1. My account > Groups Click
+!assignee.PNG!
