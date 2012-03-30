@@ -1,0 +1,5 @@
+# English strings go here for Rails i18n
+en:
+  label_GroupsAssignedsPlugin_assignee: "Assignee"
+  label_GroupsAssignedsPlugin_groups: "Group"
+  

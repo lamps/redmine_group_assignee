@@ -1,0 +1,54 @@
+<div class="splitcontentleft">
+ <% @in_assignees = User.active.in_group_assignees(@group.id) %>	
+ <% if @in_assignees.any? %>
+  <table class="list users">
+    <thead><tr>
+      <th><%= l(:label_user) %></th>
+      <th style="width:15%"></th>
+    </tr></thead>
+    <tbody>
+    <% @in_assignees.each do |user| %>
+	  <% next unless user %>
+      <tr id="user-<%= user.id %>" class="<%= cycle 'odd', 'even' %>">
+        <td class="user"><%= link_to_user user %></td>
+        <td class="buttons">
+            <%= link_to_remote l(:button_delete), { :url => {:controller => 'groupext',
+                             :action => 'delete_group_assignee', :tab => 'assignees',
+                             :partial => 'groupext/assignee', :group_id => @group.id , :user_id => user}, :method => :delete }, :class => 'icon icon-del' %>
+        </td>
+      </tr>
+	  <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
+</div>
+
+<div class="splitcontentright">
+<% @not_in_assignees = User.active.not_in_group_assignees(@group.id).all(:limit => 300) %>
+<% if @not_in_assignees.any? %>
+  <% remote_form_for @group, :url => {:controller => 'groupext',
+                             :action => 'add_group_assignee', :tab => 'assignees',
+                             :partial => 'groupext/assignee', :group_id => @group.id} do |f| %>
+    <fieldset><legend><%=l(:label_user_new)%></legend>
+
+    <p><%= label_tag "assignee_search", l(:label_user_search) %><%= text_field_tag 'assignee_search', nil %></p>
+    <%= observe_field(:assignee_search,
+                 :frequency => 0.5,
+                 :update => :assignees,
+                 :url => {:controller => 'groupext',:action => 'autocomplete_for_assigned', :tab => 'assignees',:group_id => @group.id},
+                 :method => :get,
+                 :with => 'q')
+                  %>
+
+    <div id="assignees">
+      <%= principals_check_box_tags 'user_ids[]', @not_in_assignees %>
+    </div>
+
+    <p><%= submit_tag l(:button_add) %></p>
+    </fieldset>
+  <% end %>
+<% end %>
+
+</div>

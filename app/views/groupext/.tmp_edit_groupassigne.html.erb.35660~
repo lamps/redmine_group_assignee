@@ -1,0 +1,5 @@
+<h2><%= link_to l(:label_GroupsAssignedsPlugin_groups), { :controller => 'groupext', :action => 'menugroup' } %> &#187; <%= h(@group) %></h2>
+
+<%= render_tabs groupassinge_settings_tabs %>
+
+<% html_title(l(:label_group), @group, l(:label_administration)) -%>

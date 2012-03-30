@@ -1,0 +1,27 @@
+<div class="contextual">
+<%= link_to l(:label_group_new), :controller => 'setting', :action => 'new', :class => 'icon icon-add' %>
+</div>
+
+<h2><%= l(:label_group_plural) %></h2>
+<% if @groups.any? %>
+<table class="list groups">
+  <thead><tr>
+  <th><%=l(:label_group)%></th>
+  <th><%=l(:label_user_plural)%></th>
+  <th></th>
+  </tr></thead>
+  <tbody>
+<% @groups.each do |group| %>
+  <% if User.current.assignee?(group.id) %>
+  	<tr class="<%= cycle 'odd', 'even' %>">
+      <td align="center">
+	        <%= link_to h(group), :controller => 'setting', :action => 'edit_groupassigne', :group_id => group.id  %>
+			</td>
+      <td align="center"><%= group.users.size %></td>
+   </tr>
+  <% end %>
+<% end %>
+</table>
+<% else %>
+<p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
