@@ -1,4 +1,0 @@
-<% labelled_form_for @group,:url => { :controller => 'groupext', :action => 'update',:id => @group.id} do |f| %>
-<%= render :partial => 'form', :locals => { :f => f } %>
-<%= submit_tag l(:button_save) %>
-<% end %>
