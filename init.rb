@@ -4,6 +4,7 @@ require 'dispatcher'
 require 'groups_helper_patch'
 require 'groups_controller_patch'
 require 'users_patch'
+require 'groups_patch'
 
 # ruby bug???? http://www.redmine.org/issues/4257
 require_dependency 'project'
@@ -14,10 +15,12 @@ require_dependency 'project'
 Dispatcher.to_prepare :redmine_group_assignee do
   require_dependency 'principal' 
   require_dependency 'user'
+  require_dependency 'group'
 
   GroupsController.send(:include, GroupsAssignedsPlugin::GroupsControllerPatch)
   GroupsHelper.send(:include, GroupsAssignedsPlugin::GroupsHelperPatch)
   User.send(:include, GroupsAssignedsPlugin::UserPatch)
+  Group.send(:include, GroupsAssignedsPlugin::GroupPatch)
 end
 
 # http://www.redmine.org/projects/redmine/wiki/Plugin_Tutorial

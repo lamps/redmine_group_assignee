@@ -13,6 +13,14 @@ Group Admin Setting
 1. My account > Groups Click
 !assignee.PNG!
 
+Compatible with Redmine 1.3.x , 1.4.x 
+
+bug fix 
+2012-5-22
+1. router mapping.
+2. db bug fix.
+3. not show group imamge 
+
 설명
 이 플러그인은 그룹을 관리자만 컨트롤 할수 있는데 권한을 일반 유저한테도 주기 위해 만들었습니다.
 

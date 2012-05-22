@@ -97,10 +97,19 @@ class GroupextController < ApplicationController
   end
   
   def edit_groupassigne
+	return nil if check_group_assignee(params[:group_id]) == false
+	
     @group = Group.find(params[:group_id], :include => :projects)
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @groups }
+    end
+  end
+
+  def check_group_assignee(group_id)
+	if !GroupsAssigned.find(:first, :conditions => ['user_id = ? and group_id = ?', User.current.id,group_id])
+      render_403
+      return false
     end
   end
   
