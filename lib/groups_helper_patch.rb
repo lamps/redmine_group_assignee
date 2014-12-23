@@ -5,7 +5,7 @@ module GroupsAssignedsPlugin
     def self.included(base) # :nodoc:
       base.send(:include, InstanceMethodsForGroupsHelper)
       base.send(:extend, ClassMethodsForGroupsHelper)
-      Rails.logger.warn "GroupsHelperPatch: after: GroupsHelper.methods is: " + base.methods.sort().join(',')
+      # Rails.logger.warn "GroupsHelperPatch: after: GroupsHelper.methods is: " + base.methods.sort().join(',')
   
       base.class_eval do
         alias_method_chain :group_settings_tabs, :assignees
