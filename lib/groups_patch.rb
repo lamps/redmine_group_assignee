@@ -10,5 +10,6 @@ module GroupsAssignedsPlugin
         end
       end
     end
+
   end
 end
