@@ -1,27 +1,49 @@
 require 'redmine'
-require 'dispatcher'
+require 'dispatcher' unless Rails::VERSION::MAJOR >= 3
 
-require 'groups_helper_patch'
-require 'groups_controller_patch'
-require 'users_patch'
-require 'groups_patch'
+if Rails::VERSION::MAJOR >= 3
+   ActionDispatch::Callbacks.to_prepare do
+      require 'groups_helper_patch'
+      require 'groups_controller_patch'
+      require 'users_patch'
+      require 'groups_patch'
+      require 'group_edit_hooks'
+
+      require_dependency 'project'
+      require_dependency 'principal' 
+      require_dependency 'user'
+      require_dependency 'group'
+      Rails.logger.warn "Sending updates:"
+
+      GroupsController.send(:include, GroupsAssignedsPlugin::GroupsControllerPatch)
+      GroupsHelper.send(:include, GroupsAssignedsPlugin::GroupsHelperPatch)
+      User.send(:include, GroupsAssignedsPlugin::UserPatch)
+      Group.send(:include, GroupsAssignedsPlugin::GroupPatch)
+
+   end
+else
+   Dispatcher.to_prepare :redmine_group_assignee  do
+      require 'groups_helper_patch'
+      require 'groups_controller_patch'
+      require 'users_patch'
+      require 'groups_patch'
+      require 'group_edit_hooks'
+
+      require_dependency 'project'
+      require_dependency 'principal' 
+      require_dependency 'user'
+      require_dependency 'group'
+
+      GroupsController.send(:include, GroupsAssignedsPlugin::GroupsControllerPatch)
+      GroupsHelper.send(:include, GroupsAssignedsPlugin::GroupsHelperPatch)
+      User.send(:include, GroupsAssignedsPlugin::UserPatch)
+      Group.send(:include, GroupsAssignedsPlugin::GroupPatch)
+   end
+end
 
 # ruby bug???? http://www.redmine.org/issues/4257
-require_dependency 'project'
 
 #RAILS_DEFAULT_LOGGER.info 'Starting Groups plugin for Redmine'
-
-# http://theadmin.org/articles/how-to-modify-core-redmine-classes-from-a-plugin/
-Dispatcher.to_prepare :redmine_group_assignee do
-  require_dependency 'principal' 
-  require_dependency 'user'
-  require_dependency 'group'
-
-  GroupsController.send(:include, GroupsAssignedsPlugin::GroupsControllerPatch)
-  GroupsHelper.send(:include, GroupsAssignedsPlugin::GroupsHelperPatch)
-  User.send(:include, GroupsAssignedsPlugin::UserPatch)
-  Group.send(:include, GroupsAssignedsPlugin::GroupPatch)
-end
 
 # http://www.redmine.org/projects/redmine/wiki/Plugin_Tutorial
 Redmine::Plugin.register :redmine_group_assignee do
@@ -40,5 +62,4 @@ end
 
 # http://www.redmine.org/projects/redmine/wiki/Hooks
 # http://www.redmine.org/projects/redmine/wiki/Hooks_List
-require 'group_edit_hooks'
 

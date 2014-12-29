@@ -1,5 +1,8 @@
+require 'groups_helper'
+
 class GroupextController < ApplicationController
   before_filter :require_group_assignee  
+  helper GroupsHelper
   
   def new
     @group = Group.new
@@ -56,6 +59,7 @@ class GroupextController < ApplicationController
   end
   
   def add_group_assignee
+    Rails.logger.warn "add_group_assignee: params: " + params.to_s
     User.find_all_by_id(params[:user_ids]).each do |users|
       groupAssignee = GroupsAssigned.new
       groupAssignee.group_id = params[:group_id]
@@ -63,29 +67,14 @@ class GroupextController < ApplicationController
       groupAssignee.save!
     end          
  
-    @group = Group.find(params[:group_id])
-    respond_to do |format|
-      format.html { redirect_to :controller => 'groups', :action => 'edit', :id => params[:group_id], :tab => 'assignees' }
-      format.js {
-        render(:update) {|page|
-          page.replace_html "tab-content-assignees", :partial => 'groupext/assignee' , :controller => 'groups', :action => 'edit', :id => params[:group_id] 
-        }
-      }
-    end
+    redirect_to edit_group_path(params[:group_id]) + '?tab=assignees'
   end
   
   def delete_group_assignee
+    Rails.logger.warn "delete_group_assignee: params: " + params.to_s
     GroupsAssigned.deleteAssignee(params[:group_id],params[:user_id])
     
-    @group = Group.find(params[:group_id])
-    respond_to do |format|
-      format.html { redirect_to :controller => 'groups', :action => 'edit', :id => params[:group_id], :tab => 'assignees' }
-      format.js {
-        render(:update) {|page|
-          page.replace_html "tab-content-assignees", :partial => 'groupext/assignee' , :controller => 'groups', :action => 'edit', :id => params[:group_id] 
-        }
-      }
-    end
+    redirect_to edit_group_path(params[:group_id]) + '?tab=assignees'
   end
   
   def menugroup

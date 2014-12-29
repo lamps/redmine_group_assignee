@@ -4,7 +4,8 @@ class GroupEditHook < Redmine::Hook::ViewListener
     user = context[:user]
     if User.current.assignee?
       ret_str = '| '
-      ret_str << link_to(l(:label_GroupsAssignedsPlugin_groups), { :controller => 'groupext', :action => 'menugroup' },:class => 'icon icon-groupext')
+      #ret_str << link_to(l(:label_GroupsAssignedsPlugin_groups), { :controller => 'groupext', :action => 'menugroup' },:class => 'icon icon-groupext')
+      ret_str << link_to(l(:label_GroupsAssignedsPlugin_groups), '../groupext/menugroup' ,:class => 'icon icon-groupext')
       return ret_str
    end
  end
